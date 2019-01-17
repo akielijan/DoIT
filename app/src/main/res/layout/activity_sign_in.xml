@@ -37,6 +37,7 @@
                 android:id="@+id/sign_in_app_logo"
                 android:layout_width="match_parent"
                 android:layout_height="284dp"
+                android:contentDescription="@string/description_full_logo"
                 app:srcCompat="@drawable/full_logo_doit" />
 
             <TextView
@@ -60,20 +61,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="false"
-                android:text="Remember me"
+                android:text="@string/remember_me"
                 android:textAlignment="viewStart" />
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/sign_in_terms_link"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Terms and Conditions" />
+                android:text="@string/action_terms_and_conditions" />
 
             <TextView
-                android:id="@+id/Privacy Policy"
+                android:id="@+id/sign_in_privacy_link"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text="@string/action_privacy_policy" />
 
         </LinearLayout>
     </ScrollView>

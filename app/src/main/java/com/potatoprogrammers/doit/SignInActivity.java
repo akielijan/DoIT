@@ -68,7 +68,7 @@ public class SignInActivity extends AppCompatActivity {
      */
     private void attemptSignInWithGoogle() {
         showProgress(true);
-        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
     }
 
     /**
