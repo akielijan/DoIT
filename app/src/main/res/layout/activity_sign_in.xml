@@ -67,16 +67,6 @@
                     app:srcCompat="@drawable/sign_in_action_button" />
             </LinearLayout>
 
-            <CheckBox
-                android:id="@+id/sign_in_remember_me"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:buttonTint="@color/colorPrimaryDark"
-                android:checked="false"
-                android:text="@string/remember_me"
-                android:textAlignment="viewStart"
-                android:textColorLink="@color/colorPrimaryDark" />
-
             <TextView
                 android:id="@+id/sign_in_terms_link"
                 android:layout_width="wrap_content"
