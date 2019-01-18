@@ -59,16 +59,12 @@
                 android:paddingLeft="50dp"
                 android:paddingRight="50dp">
 
-                <Button
+                <ImageView
                     android:id="@+id/sign_in_action_button"
-                    style="?android:textAppearanceSmall"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:backgroundTint="@color/colorPrimaryDark"
-                    android:text="@string/action_sign_in"
-                    android:textColor="@android:color/background_light"
-                    android:textStyle="bold" />
+                    android:layout_width="0dp"
+                    android:layout_height="76dp"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/sign_in_action_button" />
             </LinearLayout>
 
             <CheckBox

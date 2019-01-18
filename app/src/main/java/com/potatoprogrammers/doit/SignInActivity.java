@@ -24,6 +24,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -42,7 +43,7 @@ public class SignInActivity extends AppCompatActivity {
         hideTitleBar();
         setContentView(R.layout.activity_sign_in);
 
-        Button signInButton = findViewById(R.id.sign_in_action_button);
+        ImageView signInButton = findViewById(R.id.sign_in_action_button);
         TextView signInErrorArea = findViewById(R.id.sign_in_error);
 
         signInErrorArea.setText(""); //todo current error state
