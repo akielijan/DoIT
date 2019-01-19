@@ -1,0 +1,79 @@
+{
+  "project_info": {
+    "project_number": "423602218548",
+    "firebase_url": "https://doit-1547836392554.firebaseio.com",
+    "project_id": "doit-1547836392554",
+    "storage_bucket": "doit-1547836392554.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:423602218548:android:4dbef176aeaaa37c",
+        "android_client_info": {
+          "package_name": "com.potatoprogrammers.doit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "423602218548-2d8luna7adnb7j8gpmqo87m5nf0n08ee.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.potatoprogrammers.doit",
+            "certificate_hash": "5502a8521347829b55a5ef084d492680199752f8"
+          }
+        },
+        {
+          "client_id": "423602218548-1pt9iu60arv3kq401c8m6v6uka2728g3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.potatoprogrammers.doit",
+            "certificate_hash": "7de29320823b348f825f52b00ccaeaa3f1ce586e"
+          }
+        },
+        {
+          "client_id": "423602218548-t2b7f9iq7pgpdt8r1oh2nl4i2dbs5jst.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.potatoprogrammers.doit",
+            "certificate_hash": "290a0ba283e8b1ec65870f264dcee68228c7bc11"
+          }
+        },
+        {
+          "client_id": "423602218548-uksquk4i2c2ing9q6867gh6c6b0s9ptp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.potatoprogrammers.doit",
+            "certificate_hash": "b146401a59dfd970045a47a583b4a56cb2e32fc0"
+          }
+        },
+        {
+          "client_id": "423602218548-sfhvejfkrcbob66cvn59v8htekvbimf7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOwY9Zr9WC5g2qVGgGFaHOiciGSCWIgYI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "423602218548-sfhvejfkrcbob66cvn59v8htekvbimf7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

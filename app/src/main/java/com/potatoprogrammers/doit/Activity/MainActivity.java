@@ -2,6 +2,7 @@ package com.potatoprogrammers.doit.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.design.widget.NavigationView;
@@ -17,6 +18,13 @@ import com.potatoprogrammers.doit.Fragment.ActivitiesFragment;
 import com.potatoprogrammers.doit.Fragment.PlanFragment;
 import com.potatoprogrammers.doit.Fragment.StatisticsFragment;
 import com.potatoprogrammers.doit.R;
+
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -38,6 +46,8 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         changeFragment(new PlanFragment());
+
+        Snackbar.make(findViewById(R.id.drawer_layout), String.format(Locale.getDefault(), "Hello %s", FirebaseAuth.getInstance().getCurrentUser().getDisplayName()), Snackbar.LENGTH_SHORT).show();
     }
 
     private void changeFragment(Fragment fragment) {
@@ -91,11 +101,21 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_statistics) {
             changeFragment(new StatisticsFragment());
         } else if (id == R.id.nav_sign_out) {
+            signOut();
             startActivity(new Intent(getApplicationContext(), SignInActivity.class));
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void signOut() {
+        FirebaseAuth.getInstance().signOut();
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .build();
+        GoogleSignInClient client = GoogleSignIn.getClient(this, gso);
+        client.signOut();
     }
 }
