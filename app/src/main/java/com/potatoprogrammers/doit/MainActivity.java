@@ -2,9 +2,8 @@ package com.potatoprogrammers.doit;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -13,18 +12,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
-import android.widget.ViewFlipper;
 
-public class HomeActivity extends AppCompatActivity
+public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
-    ViewFlipper vf;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -34,19 +29,16 @@ public class HomeActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        vf = findViewById(R.id.viewFlipper);
-        vf.setDisplayedChild(0);
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        TextView test = findViewById(R.id.textActivites);
-        test.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                test.setText("Clicked! - from home - working");
-            }
-        });
+        changeFragment(new PlanFragment());
+    }
+
+    private void changeFragment(Fragment fragment) {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.content_frame, fragment);
+        ft.commit();
     }
 
     @Override
@@ -81,20 +73,23 @@ public class HomeActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+
+        // set item as selected to persist highlight
+        item.setChecked(true);
+
         int id = item.getItemId();
 
-        //todo handle nav
         if (id == R.id.nav_plan) {
-            vf.setDisplayedChild(0);
+            changeFragment(new PlanFragment());
         } else if (id == R.id.nav_activities) {
-            vf.setDisplayedChild(1);
+            changeFragment(new ActivitiesFragment());
         } else if (id == R.id.nav_statistics) {
-
+            changeFragment(new StatisticsFragment());
         } else if (id == R.id.nav_sign_out) {
             startActivity(new Intent(getApplicationContext(), SignInActivity.class));
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

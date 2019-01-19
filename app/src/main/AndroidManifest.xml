@@ -25,14 +25,7 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".HomeActivity"
             android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".ActivitiesActivity" />
-        <activity android:name=".PlanActivity" />
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
-
 </manifest>
