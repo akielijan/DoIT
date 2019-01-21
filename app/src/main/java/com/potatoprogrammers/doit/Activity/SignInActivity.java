@@ -1,4 +1,4 @@
-package com.potatoprogrammers.doit;
+package com.potatoprogrammers.doit.Activity;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -16,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.potatoprogrammers.doit.R;
 
 /**
  * A login screen that offers sign in into app via google authentication.

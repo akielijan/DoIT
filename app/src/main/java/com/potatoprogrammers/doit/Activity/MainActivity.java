@@ -1,4 +1,4 @@
-package com.potatoprogrammers.doit;
+package com.potatoprogrammers.doit.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +12,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.potatoprogrammers.doit.Fragment.ActivitiesFragment;
+import com.potatoprogrammers.doit.Fragment.PlanFragment;
+import com.potatoprogrammers.doit.Fragment.StatisticsFragment;
+import com.potatoprogrammers.doit.R;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
