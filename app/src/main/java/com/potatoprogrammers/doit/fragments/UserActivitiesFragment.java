@@ -65,7 +65,7 @@ public class UserActivitiesFragment extends AbstractFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 activitiesListView.setItemChecked(position, !activitiesListView.isItemChecked(position)); //todo make it better
-                swapFragment(new UserActivityFragment());
+                swapFragment(new UserActivityFragment(), prepareArgumentsForUserActivity(position));
             }
         });
 
@@ -76,5 +76,11 @@ public class UserActivitiesFragment extends AbstractFragment {
                 activitiesListView.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_checked, activitiesList));
             }
         });
+    }
+
+    private Bundle prepareArgumentsForUserActivity(int userActivityPosition) {
+        Bundle args = new Bundle();
+        args.putInt("userActivityPosition",userActivityPosition);
+        return args;
     }
 }
