@@ -1,4 +1,4 @@
-package com.potatoprogrammers.doit.Activity;
+package com.potatoprogrammers.doit.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,9 +14,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.potatoprogrammers.doit.Fragment.ActivitiesFragment;
-import com.potatoprogrammers.doit.Fragment.PlanFragment;
-import com.potatoprogrammers.doit.Fragment.StatisticsFragment;
+import com.potatoprogrammers.doit.fragments.UserActivitiesFragment;
+import com.potatoprogrammers.doit.fragments.PlanFragment;
+import com.potatoprogrammers.doit.fragments.StatisticsFragment;
 import com.potatoprogrammers.doit.R;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_plan) {
             changeFragment(new PlanFragment());
         } else if (id == R.id.nav_activities) {
-            changeFragment(new ActivitiesFragment());
+            changeFragment(new UserActivitiesFragment());
         } else if (id == R.id.nav_statistics) {
             changeFragment(new StatisticsFragment());
         } else if (id == R.id.nav_sign_out) {

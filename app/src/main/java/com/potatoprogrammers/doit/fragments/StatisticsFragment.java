@@ -1,4 +1,4 @@
-package com.potatoprogrammers.doit.Fragment;
+package com.potatoprogrammers.doit.fragments;
 
 
 import android.os.Bundle;
@@ -13,10 +13,10 @@ import com.potatoprogrammers.doit.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ActivitiesFragment extends Fragment {
+public class StatisticsFragment extends Fragment {
 
 
-    public ActivitiesFragment() {
+    public StatisticsFragment() {
         // Required empty public constructor
     }
 
@@ -25,7 +25,7 @@ public class ActivitiesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_activities, container, false);
+        return inflater.inflate(R.layout.fragment_statistics, container, false);
     }
 
     // This event is triggered soon after onCreateView().
@@ -35,5 +35,4 @@ public class ActivitiesFragment extends Fragment {
         // Setup any handles to view objects here
         // EditText etFoo = (EditText) view.findViewById(R.id.etFoo);
     }
-
 }
