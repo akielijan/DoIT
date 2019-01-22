@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import com.potatoprogrammers.doit.R;
 
 
-public class PlanFragment extends Fragment {
+public class PlanFragment extends AbstractFragment {
 
     public PlanFragment() {
 

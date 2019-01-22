@@ -12,7 +12,7 @@ import com.potatoprogrammers.doit.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class UserActivityFragment extends Fragment {
+public class UserActivityFragment extends AbstractFragment {
 
     public UserActivityFragment() {
 

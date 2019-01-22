@@ -13,7 +13,7 @@ import com.potatoprogrammers.doit.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class StatisticsFragment extends Fragment {
+public class StatisticsFragment extends AbstractFragment {
 
 
     public StatisticsFragment() {

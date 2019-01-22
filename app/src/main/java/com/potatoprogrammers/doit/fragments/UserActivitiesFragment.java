@@ -23,7 +23,7 @@ import java.util.Arrays;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class UserActivitiesFragment extends Fragment {
+public class UserActivitiesFragment extends AbstractFragment {
     private ListView activitiesListView;
     private Button addActivityButton;
     ArrayList<String> activitiesList; //todo remove from globals
@@ -65,11 +65,7 @@ public class UserActivitiesFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 activitiesListView.setItemChecked(position, !activitiesListView.isItemChecked(position)); //todo make it better
-                //todo create below function in abstract or sth
-                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.content_frame, new UserActivityFragment());
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
+                swapFragment(new UserActivityFragment());
             }
         });
 
