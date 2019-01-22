@@ -24,52 +24,38 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/userActivityNameTextView2"
+            android:id="@+id/stepNoTextView"
             android:layout_width="wrap_content"
             android:layout_height="39dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
             android:text="Step #"
             android:textSize="30sp"
+            app:layout_constraintBottom_toTopOf="@+id/stepDescriptionTextView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView2" />
-
-        <CheckBox
-            android:id="@+id/checkBox"
-            style="@style/Widget.AppCompat.CompoundButton.CheckBox"
-            android:layout_width="29dp"
-            android:layout_height="39dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            android:textAlignment="center"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/userActivityNameTextView" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <ImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/stepImageView"
             android:layout_width="193dp"
             android:layout_height="220dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
             android:src="@mipmap/ic_launcher"
+            app:layout_constraintBottom_toTopOf="@+id/stepNoTextView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/checkBox" />
+            app:layout_constraintTop_toBottomOf="@+id/setActivityActiveCheckBox" />
 
         <EditText
-            android:id="@+id/editText"
+            android:id="@+id/stepDescriptionTextView"
             android:layout_width="345dp"
             android:layout_height="261dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:ems="10"
             android:inputType="textMultiLine"
@@ -77,7 +63,54 @@
             android:textAlignment="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:id="@+id/editUserActivityImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:src="@android:drawable/ic_menu_edit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/userActivityNameTextView"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <CheckBox
+            android:id="@+id/setActivityActiveCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/userActivityNameTextView2" />
+            app:layout_constraintTop_toBottomOf="@+id/userActivityNameTextView" />
+
+        <ImageView
+            android:id="@+id/prevStepImageView"
+            android:layout_width="27dp"
+            android:layout_height="170dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/left_arrow"
+            app:layout_constraintBottom_toBottomOf="@+id/stepImageView"
+            app:layout_constraintEnd_toStartOf="@+id/stepImageView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/stepImageView" />
+
+        <ImageView
+            android:id="@+id/nextStepImageView"
+            android:layout_width="27dp"
+            android:layout_height="170dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/right_arrow"
+            app:layout_constraintBottom_toBottomOf="@+id/stepImageView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/stepImageView"
+            app:layout_constraintTop_toTopOf="@+id/stepImageView" />
+
     </android.support.constraint.ConstraintLayout>
 </FrameLayout>
