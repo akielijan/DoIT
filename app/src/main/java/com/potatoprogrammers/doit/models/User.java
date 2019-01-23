@@ -30,7 +30,6 @@ public class User {
     @Setter
     private static User loggedInUser;
     public static final String COLLECTION = "users";
-    private static final String TAG = "User";
 
     @NonNull
     private List<UserActivity> activities = new ArrayList<>();

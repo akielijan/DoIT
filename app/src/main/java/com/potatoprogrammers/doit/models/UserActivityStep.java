@@ -10,6 +10,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class UserActivityStep {
-    private Base64 image; //todo format
+    private Base64 image;
     private String description;
 }

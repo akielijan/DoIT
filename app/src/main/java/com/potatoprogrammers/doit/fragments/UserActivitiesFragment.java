@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.potatoprogrammers.doit.models.User;
 import com.potatoprogrammers.doit.models.UserActivity;
 import com.potatoprogrammers.doit.R;
 
@@ -26,7 +27,6 @@ import java.util.Arrays;
 public class UserActivitiesFragment extends AbstractFragment {
     private ListView activitiesListView;
     private Button addActivityButton;
-    ArrayList<String> activitiesList; //todo remove from globals
 
     public UserActivitiesFragment() {
 
@@ -42,21 +42,17 @@ public class UserActivitiesFragment extends AbstractFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         activitiesListView = view.findViewById(R.id.activitiesListView);
         addActivityButton = view.findViewById(R.id.addActivityButton);
-        activitiesList = new ArrayList<>();
 
         activitiesListView.setClickable(true);
         activitiesListView.setLongClickable(true);
         activitiesListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
-        String activities[] = {new UserActivity("EXISTED ACTIVITY").getName()}; //todo it is just a sample, get it from db!
-
-        activitiesList.addAll(Arrays.asList(activities));
-        activitiesListView.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_checked, activitiesList));
+        activitiesListView.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_checked, User.getLoggedInUser().getActivities()));
 
         activitiesListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                activitiesListView.setItemChecked(position, !activitiesListView.isItemChecked(position));
+                activitiesListView.setItemChecked(position, User.getLoggedInUser().getActivities().get(position).toggleActive());
                 return true;
             }
         });
@@ -72,8 +68,8 @@ public class UserActivitiesFragment extends AbstractFragment {
         addActivityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                activitiesList.add("NEW ACTIVITY");
-                activitiesListView.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_checked, activitiesList));
+                User.getLoggedInUser().getActivities().add(new UserActivity("NEW ACTIVITY" + User.getLoggedInUser().getActivities().size()));
+                activitiesListView.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_checked, User.getLoggedInUser().getActivities()));
             }
         });
     }
