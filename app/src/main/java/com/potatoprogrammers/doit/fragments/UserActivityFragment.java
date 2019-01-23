@@ -19,7 +19,6 @@ import com.potatoprogrammers.doit.R;
  */
 public class UserActivityFragment extends AbstractFragment {
     private ImageView editUserActivity;
-    private CheckBox setActivityActive;
     private ImageView nextStep;
     private ImageView prevStep;
     private ImageView stepImage;
@@ -40,18 +39,10 @@ public class UserActivityFragment extends AbstractFragment {
         super.onViewCreated(view, savedInstanceState);
 
         editUserActivity = view.findViewById(R.id.editUserActivityImageView);
-        setActivityActive = view.findViewById(R.id.setActivityActiveCheckBox);
         stepImage = view.findViewById(R.id.stepImageView);
         stepDescription = view.findViewById(R.id.stepDescriptionTextView);
         nextStep = view.findViewById(R.id.nextStepImageView);
         prevStep = view.findViewById(R.id.prevStepImageView);
-
-        setActivityActive.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //todo update activity active status
-            }
-        });
 
         editUserActivity.setOnClickListener(new View.OnClickListener() {
             @Override
