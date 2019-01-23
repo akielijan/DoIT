@@ -47,6 +47,30 @@
           }
         },
         {
+          "client_id": "423602218548-8233t9iajipipfst88g6kf6o4nbs09jh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.potatoprogrammers.doit",
+            "certificate_hash": "7c904bcb68722dbf082aa3684ab90f38c1e2260c"
+          }
+        },
+        {
+          "client_id": "423602218548-9pi6a2bs1spfcv8c8e2in0brkqhmlaub.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.potatoprogrammers.doit",
+            "certificate_hash": "6157c34f50dd4e28769f9930cb701437b84fbb57"
+          }
+        },
+        {
+          "client_id": "423602218548-u1qqgf3nrbij7mvnj3hk0kcl4n3pe12e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.potatoprogrammers.doit",
+            "certificate_hash": "6083c3b2966f2e806e2a10191cd2aa14fe868d5b"
+          }
+        },
+        {
           "client_id": "423602218548-sfhvejfkrcbob66cvn59v8htekvbimf7.apps.googleusercontent.com",
           "client_type": 3
         }
