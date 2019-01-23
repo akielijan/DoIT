@@ -64,7 +64,6 @@ public class SignInActivity extends AppCompatActivity {
 
     /**
      * Attempts to sign in using google authentication.
-     * todo implement google auth
      */
     private void attemptSignInWithGoogle() {
 //        showProgress(true);

@@ -3,6 +3,7 @@ package com.potatoprogrammers.doit.models;
 import com.potatoprogrammers.doit.enums.DayOfTheWeek;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -22,8 +23,8 @@ public class UserActivity {
 
     private String name;
     private boolean isActive;
-    private List<UserActivityStep> userActivitySteps;
-    private List<UserActivityDate> userActivityDates;
+    private List<UserActivityStep> userActivitySteps = new ArrayList<>(Collections.singletonList(new UserActivityStep()));
+    private List<UserActivityDate> userActivityDates = new ArrayList<>();
 
     public boolean toggleActive() {
         this.setActive(!this.isActive());
@@ -47,5 +48,10 @@ public class UserActivity {
         for (int i = 0; i <= 6; i++) {
             this.getUserActivityDates().add(new UserActivityDate(DayOfTheWeek.getDayOfWeek(i)));
         }
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

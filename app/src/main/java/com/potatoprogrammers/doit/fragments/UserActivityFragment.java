@@ -1,37 +1,53 @@
 package com.potatoprogrammers.doit.fragments;
 
+import android.app.AlertDialog;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.InputType;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.potatoprogrammers.doit.R;
 import com.potatoprogrammers.doit.models.User;
+import com.potatoprogrammers.doit.models.UserActivity;
 import com.potatoprogrammers.doit.models.UserActivityStep;
 
-import java.util.List;
+import java.io.IOException;
 import java.util.Locale;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class UserActivityFragment extends AbstractFragment {
+    private static final int REQUEST_GET_STEP_PICTURE = 1;
     private ImageView editUserActivity;
     private ImageView addStep;
     private ImageView deleteStep;
     private ImageView nextStep;
     private ImageView prevStep;
     private ImageView stepImage;
-    private TextView stepDescription;
+    private EditText stepDescription;
     private TextView activityName;
     private TextView stepNo;
     private int activityPosition;
-    private int currentStep;
+    private int currentStep = 0;
+
+    private UserActivity activity;
+    private UserActivityStep activityStep;
 
     public UserActivityFragment() {
 
@@ -48,7 +64,56 @@ public class UserActivityFragment extends AbstractFragment {
         super.onViewCreated(view, savedInstanceState);
 
         activityPosition = getArguments().getInt("userActivityPosition");
-        currentStep = 0;
+        activity = User.getLoggedInUser().getActivities().get(activityPosition);
+        if (activity.getUserActivitySteps().isEmpty()) { //just for the old records
+            activity.getUserActivitySteps().add(new UserActivityStep());
+        }
+        activityStep = activity.getUserActivitySteps().get(currentStep);
+        initializeComponentsFromView(view);
+        initializeListeners();
+        setupStepButtonsVisibility();
+
+        activityName.setText(activity.getName());
+        stepNo.setText(String.format(Locale.getDefault(), "Step %d", currentStep+1));
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setUpFromModel(activityStep);
+    }
+
+    private void initializeListeners() {
+        editUserActivity.setOnClickListener(v -> swapFragment(new EditUserActivityFragment(), getArguments()));
+        activityName.setOnLongClickListener(this::renameActivity);
+        stepImage.setOnLongClickListener(v -> {
+            callPictureSelector(REQUEST_GET_STEP_PICTURE);
+            //handle rest in onActivityResult
+            return true;
+        });
+
+        stepDescription.setOnLongClickListener(v -> {
+            //todo update current step description
+            return true;
+        });
+
+        nextStep.setOnClickListener(this::moveToNextStep);
+        prevStep.setOnClickListener(this::moveToPreviousStep);
+        addStep.setOnClickListener(this::addStep);
+        deleteStep.setOnClickListener(this::deleteStep);
+    }
+
+    private void setUpFromModel(UserActivityStep step) {
+        if (!TextUtils.isEmpty(step.getDescription())) {
+            stepDescription.setText(step.getDescription());
+        }
+
+        if (step.getImage() != null) {
+            stepImage.setImageBitmap(step.getImage());
+        }
+    }
+
+    private void initializeComponentsFromView(@NonNull View view) {
         editUserActivity = view.findViewById(R.id.editUserActivityImageView);
         stepImage = view.findViewById(R.id.stepImageView);
         stepDescription = view.findViewById(R.id.stepDescriptionTextView);
@@ -58,46 +123,119 @@ public class UserActivityFragment extends AbstractFragment {
         addStep = view.findViewById(R.id.addNewStepImageView);
         deleteStep = view.findViewById(R.id.deleteNewStepImageView);
         stepNo = view.findViewById(R.id.stepNoTextView);
+    }
 
-        activityName.setText(User.getLoggedInUser().getActivities().get(activityPosition).getName());
-        stepNo.setText(String.format(Locale.getDefault(), "Step %d", currentStep));
+    private void setupStepButtonsVisibility() {
+        if (currentStep <= 0) {
+            prevStep.setVisibility(View.INVISIBLE);
+        } else {
+            prevStep.setVisibility(View.VISIBLE);
+        }
 
+        if (currentStep >= activity.getUserActivitySteps().size() - 1) {
+            nextStep.setVisibility(View.INVISIBLE);
+            addStep.setVisibility(View.VISIBLE);
+            deleteStep.setVisibility(View.VISIBLE);
+        } else {
+            nextStep.setVisibility(View.VISIBLE);
+            addStep.setVisibility(View.INVISIBLE);
+            deleteStep.setVisibility(View.INVISIBLE);
+        }
+    }
 
-        editUserActivity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                swapFragment(new EditUserActivityFragment(), getArguments());
+    private void callPictureSelector(int requestCode) {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("image/*");
+        startActivityForResult(Intent.createChooser(intent, "Select picture"), requestCode);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_GET_STEP_PICTURE && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            Uri imageUri = data.getData();
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), imageUri);
+                stepImage.setImageBitmap(bitmap);
+                activityStep.setImage(bitmap);
+                //todo: upload photo to Firebase Storage
+                //todo: remove previous photo from Firebase Storage
+                this.refreshFragment();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        });
+        }
+    }
 
-        stepImage.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                //todo update current step photo
-                return true;
-            }
-        });
+    private static boolean isActivityNameValid(String val) {
+        return !TextUtils.isEmpty(val);
+    }
 
-        stepDescription.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                //todo update current step description
-                return true;
-            }
-        });
+    private void deleteStep(View v) {
+        TextView label = new TextView(getContext());
+        label.setText(R.string.delete_step_q);
+        new AlertDialog.Builder(getContext())
+                .setTitle(R.string.delete_step_title)
+                .setView(new TextView(getContext()))
+                .setPositiveButton(R.string.yes, (dialog, which) -> {
+                    if (currentStep < activity.getUserActivitySteps().size()) {
+                        activity.getUserActivitySteps().remove(currentStep);
+                        currentStep--;
+                        this.updateUserInDatabase();
+                        this.refreshFragment();
+                        this.showShortToast(R.string.deleted_step);
+                    } else {
+                        this.showShortToast(R.string.delete_failed);
+                    }
+                })
+                .setNegativeButton(R.string.no, (dialog, which) -> dialog.dismiss())
+                .show();
+    }
 
-        nextStep.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //todo change step to previous / new one on the beginning
-            }
-        });
+    private void addStep(View v) {
+        activity.getUserActivitySteps().add(new UserActivityStep());
+        currentStep++;
+        this.updateUserInDatabase();
+        this.refreshFragment();
+        setupStepButtonsVisibility();
+    }
 
-        prevStep.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //todo change step to next / new one on the end
-            }
-        });
+    private void moveToPreviousStep(View v) {
+        if (currentStep > 0) {
+            currentStep--;
+            this.refreshFragment();
+        }
+        setupStepButtonsVisibility();
+    }
+
+    private void moveToNextStep(View v) {
+        if (currentStep < activity.getUserActivitySteps().size() - 1) {
+            currentStep++;
+            this.refreshFragment();
+        }
+        setupStepButtonsVisibility();
+    }
+
+    private boolean renameActivity(View v) {
+        final EditText input = new EditText(getContext());
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        new AlertDialog.Builder(getContext())
+                .setTitle(R.string.rename_activity)
+                .setView(input)
+                .setPositiveButton(R.string.accept, (dialog, which) -> {
+                    String val = input.getText().toString().trim();
+                    if (isActivityNameValid(val)) {
+                        activity.setName(val);
+                        this.updateUserInDatabase();
+                        this.refreshFragment();
+                    } else {
+                        Toast.makeText(getContext(), R.string.invalid_name, Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton(R.string.cancel, (dialog, which) -> dialog.cancel())
+                .show();
+        return true;
     }
 }

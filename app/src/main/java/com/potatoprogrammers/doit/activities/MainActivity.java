@@ -39,6 +39,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.potatoprogrammers.doit.models.User;
 import com.potatoprogrammers.doit.models.UserActivity;
+import com.potatoprogrammers.doit.models.UserActivityStep;
 
 import java.util.HashMap;
 import java.util.List;
@@ -184,6 +185,10 @@ public class MainActivity extends AppCompatActivity
                         User y = task.getResult().toObject(User.class);
                         Toast.makeText(getApplicationContext(), String.format(Locale.getDefault(), "%s => %s", task.getResult().getId(), task.getResult().getData()), Toast.LENGTH_SHORT).show();
                         y.getActivities().add(new UserActivity("tomato"));
+                        UserActivity act = y.getActivities().get(1);
+                        act.getUserActivitySteps().add(new UserActivityStep(null, "Uno"));
+                        act.getUserActivitySteps().add(new UserActivityStep(null, "Dos"));
+                        act.getUserActivitySteps().add(new UserActivityStep(null, "Tres"));
                         db.collection("users").document(currentUser.getUid())
                                 .set(y, SetOptions.merge()).addOnSuccessListener(v -> Toast.makeText(getApplicationContext(), String.format(Locale.getDefault(), "DocumentSnapshot added with ID: %s", currentUser.getUid()), Toast.LENGTH_SHORT).show())
                                 .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), String.format(Locale.getDefault(), "Error adding document %s", e.getLocalizedMessage()), Toast.LENGTH_SHORT).show());
