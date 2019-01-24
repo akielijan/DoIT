@@ -51,7 +51,10 @@ public class PlanDayDetailsFragment extends AbstractFragment {
 
         date = (Date) getArguments().getSerializable("date");
         dayName = view.findViewById(R.id.dayTextView);
-        dayName.setText(getDayOfTheWeek().getDayName());
+        //dayName.setText(getDayOfTheWeek().getDayName());
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        dayName.setText(DayOfTheWeek.getTodayDayOfTheWeekFromCalendar(cal).getDayName());
 
         activitiesForCurrentDay = view.findViewById(R.id.dayActivitiesListView);
         activitiesForCurrentDay.setClickable(false);
@@ -105,7 +108,9 @@ public class PlanDayDetailsFragment extends AbstractFragment {
         List<UserActivity> result = new ArrayList<>();
         List<UserActivity> all = User.getLoggedInUser().getActivities();
         for (UserActivity activity: all) {
-            if(activity.getUserActivityDates().stream().anyMatch(x->x.getDay().equals(getDayOfTheWeek()))) {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(date);
+            if(activity.getUserActivityDates().stream().anyMatch(x->x.getDay().equals(DayOfTheWeek.getTodayDayOfTheWeekFromCalendar(cal)))) {
                 result.add(activity);
             }
         }
