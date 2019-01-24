@@ -110,7 +110,7 @@ public class PlanDayDetailsFragment extends AbstractFragment {
         for (UserActivity activity: all) {
             Calendar cal = Calendar.getInstance();
             cal.setTime(date);
-            if(activity.getUserActivityDates().stream().anyMatch(x->x.getDay().equals(DayOfTheWeek.getTodayDayOfTheWeekFromCalendar(cal)))) {
+            if(activity.isActive() && activity.getUserActivityDates().stream().anyMatch(x->x.getDay().equals(DayOfTheWeek.getTodayDayOfTheWeekFromCalendar(cal)))) {
                 result.add(activity);
             }
         }
