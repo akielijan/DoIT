@@ -17,6 +17,7 @@ import com.potatoprogrammers.doit.R;
 import com.potatoprogrammers.doit.models.User;
 import com.potatoprogrammers.doit.enums.DayOfTheWeek;
 import com.potatoprogrammers.doit.models.UserActivity;
+import com.potatoprogrammers.doit.models.UserActivityDate;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -110,7 +111,7 @@ public class PlanDayDetailsFragment extends AbstractFragment {
         for (UserActivity activity: all) {
             Calendar cal = Calendar.getInstance();
             cal.setTime(date);
-            if(activity.isActive() && activity.getUserActivityDates().stream().anyMatch(x->x.getDay().equals(DayOfTheWeek.getTodayDayOfTheWeekFromCalendar(cal)))) {
+            if(activity.isActive() && activity.getUserActivityDates().stream().filter(UserActivityDate::isActive).anyMatch(x->x.getDay().equals(DayOfTheWeek.getTodayDayOfTheWeekFromCalendar(cal)))) {
                 result.add(activity);
             }
         }
