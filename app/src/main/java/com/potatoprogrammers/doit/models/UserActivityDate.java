@@ -1,5 +1,10 @@
 package com.potatoprogrammers.doit.models;
 
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+
+import com.potatoprogrammers.doit.enums.DayOfTheWeek;
+
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 
@@ -11,6 +16,25 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class UserActivityDate {
-    private DayOfWeek day;
-    private LocalTime time;
+
+    UserActivityDate(DayOfTheWeek day) {
+        this.setDay(day);
+        this.initializeActivityDate();
+    }
+
+    private DayOfTheWeek day;
+    private int hour;
+    private int minute;
+    private boolean isActive;
+
+    public void setTime(int hour, int minute) {
+        this.setHour(hour);
+        this.setMinute(minute);
+    }
+
+    private void initializeActivityDate() {
+        this.setHour(0);
+        this.setMinute(0);
+        this.setActive(false);
+    }
 }

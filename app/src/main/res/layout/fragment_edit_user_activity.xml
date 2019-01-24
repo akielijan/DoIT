@@ -1,14 +1,145 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.EditUserActivityFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="edit activity fragment - set repeat, h:m etc" />
+        android:layout_height="match_parent">
 
+        <ListView
+            android:id="@+id/checkableOptionsListView"
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/currentUserActivityNameTextView" />
+
+        <TextView
+            android:id="@+id/currentUserActivityNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Actvity name"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/saveUserActivityButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Save"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/mondayTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="24dp"
+            android:text="M"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toStartOf="@+id/tuesdayTextView"
+            app:layout_constraintTop_toBottomOf="@+id/checkableOptionsListView" />
+
+        <TextView
+            android:id="@+id/tuesdayTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="24dp"
+            android:text="T"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toStartOf="@+id/wednesdayTextView"
+            app:layout_constraintTop_toBottomOf="@+id/checkableOptionsListView" />
+
+        <TextView
+            android:id="@+id/wednesdayTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="24dp"
+            android:text="W"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toStartOf="@+id/thursdayTextView"
+            app:layout_constraintTop_toBottomOf="@+id/checkableOptionsListView" />
+
+        <TextView
+            android:id="@+id/thursdayTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:text="T"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/checkableOptionsListView" />
+
+        <TextView
+            android:id="@+id/fridayTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:text="F"
+            android:textSize="24sp"
+            app:layout_constraintStart_toEndOf="@+id/thursdayTextView"
+            app:layout_constraintTop_toBottomOf="@+id/checkableOptionsListView" />
+
+        <TextView
+            android:id="@+id/saturdayTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:text="S"
+            android:textSize="24sp"
+            app:layout_constraintStart_toEndOf="@+id/fridayTextView"
+            app:layout_constraintTop_toBottomOf="@+id/checkableOptionsListView" />
+
+        <TextView
+            android:id="@+id/sundayTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:text="S"
+            android:textSize="24sp"
+            app:layout_constraintStart_toEndOf="@+id/saturdayTextView"
+            app:layout_constraintTop_toBottomOf="@+id/checkableOptionsListView" />
+
+        <ListView
+            android:id="@+id/checkableDayOptionsListView"
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/thursdayTextView" />
+
+        <TimePicker
+            android:id="@+id/activityStartTimePicker"
+            android:layout_width="251dp"
+            android:layout_height="163dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:timePickerMode="spinner"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/checkableDayOptionsListView" />
+
+    </android.support.constraint.ConstraintLayout>
 </FrameLayout>
