@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -44,7 +45,11 @@ public abstract class AbstractFragment extends Fragment {
     }
 
     protected void showShortToast(int resource) {
-        Toast.makeText(getContext(), resource, Toast.LENGTH_SHORT).show();
+        if (getContext() != null) {
+            Toast.makeText(getContext(), resource, Toast.LENGTH_SHORT).show();
+        } else {
+            Log.wtf("AbstractFragment", "No context found for the fragment");
+        }
     }
 
     protected void updateUserInDatabase() {
