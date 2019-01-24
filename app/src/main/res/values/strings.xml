@@ -35,6 +35,7 @@
     <string name="delete_failed">Deleting failed!</string>
     <string name="sync_success">Sync successful!</string>
     <string name="sync_fail">Sync failed!</string>
+    <string name="no_desc">This step has no description</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

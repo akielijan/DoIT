@@ -106,6 +106,8 @@ public class UserActivityFragment extends AbstractFragment {
     private void setUpFromModel(UserActivityStep step) {
         if (!TextUtils.isEmpty(step.getDescription())) {
             stepDescription.setText(step.getDescription());
+        } else {
+            stepDescription.setText(R.string.no_desc);
         }
 
         if (step.getImage() != null) {
