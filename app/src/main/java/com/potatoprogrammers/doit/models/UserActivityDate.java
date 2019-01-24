@@ -17,7 +17,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UserActivityDate {
 
-    UserActivityDate(DayOfTheWeek day) {
+    public UserActivityDate(DayOfTheWeek day) {
         this.setDay(day);
         this.initializeActivityDate();
     }

@@ -5,6 +5,8 @@ import com.potatoprogrammers.doit.enums.DayOfTheWeek;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,7 +26,7 @@ public class UserActivity {
     private String name;
     private boolean isActive;
     private List<UserActivityStep> userActivitySteps = new ArrayList<>(Collections.singletonList(new UserActivityStep()));
-    private List<UserActivityDate> userActivityDates = new ArrayList<>();
+    private List<UserActivityDate> userActivityDates = Stream.of(DayOfTheWeek.values()).map(UserActivityDate::new).collect(Collectors.toList());
 
     public boolean toggleActive() {
         this.setActive(!this.isActive());
