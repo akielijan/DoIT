@@ -32,7 +32,7 @@ public enum DayOfTheWeek {
     }
 
     public static String getDayName(DayOfTheWeek day) {
-        return day.toString().toLowerCase();
+        return day.toString().substring(0, 1).toUpperCase() + day.toString().substring(1).toLowerCase();
     }
 
     public String getDayName() {
