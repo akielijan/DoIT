@@ -1,5 +1,6 @@
 package com.potatoprogrammers.doit.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +10,11 @@ import android.widget.TextView;
 import com.potatoprogrammers.doit.R;
 import com.potatoprogrammers.doit.enums.DayOfTheWeek;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 import lombok.NonNull;
 
@@ -55,29 +60,50 @@ public class PlanFragment extends AbstractFragment {
     }
 
     private void initializeDaysList(@NonNull View view) {
+        visiblePlanDays[0].setText(todayDayOfTheWeek.prev().prev().prev().getDayName());
+        visiblePlanDays[1].setText(todayDayOfTheWeek.prev().prev().getDayName());
+        visiblePlanDays[2].setText(todayDayOfTheWeek.prev().getDayName());
         visiblePlanDays[3].setText(DayOfTheWeek.getDayName(todayDayOfTheWeek));
-        //todo initialize other days
+        visiblePlanDays[4].setText(todayDayOfTheWeek.next().getDayName());
+        visiblePlanDays[5].setText(todayDayOfTheWeek.next().next().getDayName());
+        visiblePlanDays[6].setText(todayDayOfTheWeek.next().next().next().getDayName());
     }
 
     private void openDayView(int id) {
-        /*switch (id) {
+        Calendar cal = Calendar.getInstance();
+
+        switch (id) {
             case R.id.threeDaysAgoTextView:
-
+                cal.add(Calendar.DAY_OF_MONTH, -3);
+                break;
             case R.id.twoDaysAgoTextView:
-
+                cal.add(Calendar.DAY_OF_MONTH, -2);
+                break;
             case R.id.dayAgoTextView:
-
+                cal.add(Calendar.DAY_OF_MONTH, -1);
+                break;
             case R.id.todayTextView:
-
+                break;
             case R.id.dayAheadTextView:
-
+                cal.add(Calendar.DAY_OF_MONTH, 1);
+                break;
             case R.id.twoDaysAheadTextView:
-
+                cal.add(Calendar.DAY_OF_MONTH, 2);
+                break;
             case R.id.threeDaysAheadTextView:
-
+                cal.add(Calendar.DAY_OF_MONTH, 3);
+                break;
             default:
+                return;
+        } //todo handle open day view, create plan structure in db
+        swapFragment(new PlanDayDetailsFragment(), prepareArgumentsForPlayDayDetails(cal.getTime()));
+        //String strDate = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(cal.getTime());
+    }
 
-        }todo handle open day view, create plan structure in db*/
+    private Bundle prepareArgumentsForPlayDayDetails(Date date) {
+        Bundle args = new Bundle();
+        args.putSerializable("date", date);
+        return args;
     }
 
     private DayOfTheWeek getTodayDayOfTheWeek() {
