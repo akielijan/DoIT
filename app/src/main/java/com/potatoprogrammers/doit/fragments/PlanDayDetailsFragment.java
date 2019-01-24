@@ -5,23 +5,26 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.EditText;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.potatoprogrammers.doit.R;
 import com.potatoprogrammers.doit.models.User;
+import com.potatoprogrammers.doit.enums.DayOfTheWeek;
+import com.potatoprogrammers.doit.models.UserActivity;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,6 +32,8 @@ import java.util.Map;
 public class PlanDayDetailsFragment extends AbstractFragment {
     private Date date;
     private EditText notes;
+    private TextView dayName;
+    private ListView activitiesForCurrentDay;
 
     public PlanDayDetailsFragment() {
     }
@@ -45,6 +50,13 @@ public class PlanDayDetailsFragment extends AbstractFragment {
         super.onViewCreated(view, savedInstanceState);
 
         date = (Date) getArguments().getSerializable("date");
+        dayName = view.findViewById(R.id.dayTextView);
+        dayName.setText(getDayOfTheWeek().getDayName());
+
+        activitiesForCurrentDay = view.findViewById(R.id.dayActivitiesListView);
+        activitiesForCurrentDay.setClickable(false);
+        activitiesForCurrentDay.setLongClickable(false);
+        updateActivitiesList(getActivitiesForToday());
         handleNotes();
     }
 
@@ -79,5 +91,30 @@ public class PlanDayDetailsFragment extends AbstractFragment {
             userNotes.put(date, "");
         }
         return userNotes.get(date);
+    }
+
+    private void updateActivitiesList(List<UserActivity> activities) {
+        ArrayList<String> names = new ArrayList<>();
+        for(UserActivity activity: activities) {
+            names.add(activity.getName());
+        }
+        activitiesForCurrentDay.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, names));
+    }
+
+    private List<UserActivity> getActivitiesForToday() {
+        List<UserActivity> result = new ArrayList<>();
+        List<UserActivity> all = User.getLoggedInUser().getActivities();
+        for (UserActivity activity: all) {
+            if(activity.getUserActivityDates().stream().anyMatch(x->x.getDay().equals(getDayOfTheWeek()))) {
+                result.add(activity);
+            }
+        }
+        return result;
+    }
+
+    private DayOfTheWeek getDayOfTheWeek() {
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        return DayOfTheWeek.getDayOfWeek(c.get(Calendar.DAY_OF_WEEK));
     }
 }
