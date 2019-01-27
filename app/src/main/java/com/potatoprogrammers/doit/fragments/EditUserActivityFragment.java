@@ -128,10 +128,10 @@ public class EditUserActivityFragment extends AbstractFragment {
 
     private void switchDay(DayOfTheWeek day, TextView clickedDay) {
         for(TextView tv : daysOfTheWeekTextViews) {
-            tv.setTypeface(tv.getTypeface(), Typeface.NORMAL);
+            tv.setTypeface(null, Typeface.NORMAL);
         }
 
-        clickedDay.setTypeface(clickedDay.getTypeface(), Typeface.BOLD);
+        clickedDay.setTypeface(null, Typeface.BOLD);
 
         String[] checkableDayOptions = {"Active on " + DayOfTheWeek.getDayName(day)};
         checkableDayOptionsList.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_checked, new ArrayList<>(Arrays.asList(checkableDayOptions))));
