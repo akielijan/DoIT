@@ -14,6 +14,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserActivityStep {
-    private Bitmap image;
+    private String imageRef;
     private String description;
 }

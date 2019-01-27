@@ -2,10 +2,8 @@ package com.potatoprogrammers.doit.fragments;
 
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -19,19 +17,26 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.potatoprogrammers.doit.R;
+import com.potatoprogrammers.doit.glide.GlideApp;
 import com.potatoprogrammers.doit.models.User;
 import com.potatoprogrammers.doit.models.UserActivity;
 import com.potatoprogrammers.doit.models.UserActivityStep;
 
-import java.io.IOException;
 import java.util.Locale;
+import java.util.UUID;
+
+import lombok.NoArgsConstructor;
 
 import static android.app.Activity.RESULT_OK;
 
 /**
  * A simple {@link Fragment} subclass.
  */
+@NoArgsConstructor
 public class UserActivityFragment extends AbstractFragment {
     private static final int REQUEST_GET_STEP_PICTURE = 1;
     private ImageView editUserActivity;
@@ -43,15 +48,10 @@ public class UserActivityFragment extends AbstractFragment {
     private EditText stepDescription;
     private TextView activityName;
     private TextView stepNo;
-    private int activityPosition;
     private int currentStep = 0;
 
     private UserActivity activity;
     private UserActivityStep activityStep;
-
-    public UserActivityFragment() {
-
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,7 +63,7 @@ public class UserActivityFragment extends AbstractFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        activityPosition = getArguments().getInt("userActivityPosition");
+        int activityPosition = getArguments().getInt("userActivityPosition");
         activity = User.getLoggedInUser().getActivities().get(activityPosition);
         if (activity.getUserActivitySteps().isEmpty()) { //just for the old records
             activity.getUserActivitySteps().add(new UserActivityStep());
@@ -75,12 +75,14 @@ public class UserActivityFragment extends AbstractFragment {
 
         activityName.setText(activity.getName());
         stepNo.setText(String.format(Locale.getDefault(), "Step %d", currentStep+1));
+
+        setupFromStepModel(activityStep);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        setUpFromModel(activityStep);
+        setupFromStepModel(activityStep);
     }
 
     private void initializeListeners() {
@@ -92,10 +94,7 @@ public class UserActivityFragment extends AbstractFragment {
             return true;
         });
 
-        stepDescription.setOnLongClickListener(v -> {
-            //todo update current step description
-            return true;
-        });
+        stepDescription.setOnLongClickListener(v -> true);
 
         nextStep.setOnClickListener(this::moveToNextStep);
         prevStep.setOnClickListener(this::moveToPreviousStep);
@@ -103,15 +102,15 @@ public class UserActivityFragment extends AbstractFragment {
         deleteStep.setOnClickListener(this::deleteStep);
     }
 
-    private void setUpFromModel(UserActivityStep step) {
+    private void setupFromStepModel(UserActivityStep step) {
         if (!TextUtils.isEmpty(step.getDescription())) {
             stepDescription.setText(step.getDescription());
         } else {
             stepDescription.setText(R.string.no_desc);
         }
 
-        if (step.getImage() != null) {
-            stepImage.setImageBitmap(step.getImage());
+        if (!TextUtils.isEmpty(step.getImageRef())) {
+            setupStepImage(step.getImageRef());
         }
     }
 
@@ -158,17 +157,53 @@ public class UserActivityFragment extends AbstractFragment {
 
         if (requestCode == REQUEST_GET_STEP_PICTURE && resultCode == RESULT_OK && data != null && data.getData() != null) {
             Uri imageUri = data.getData();
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), imageUri);
-                stepImage.setImageBitmap(bitmap);
-                activityStep.setImage(bitmap);
-                //todo: upload photo to Firebase Storage
-                //todo: remove previous photo from Firebase Storage
-                this.refreshFragment();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            deleteOldImageFromStorage(activityStep.getImageRef());
+            String imageUUID = UUID.randomUUID().toString();
+            uploadNewImageToStorage(imageUri, imageUUID); //will update the image as well
+            this.refreshFragment();
         }
+    }
+
+    private void deleteOldImageFromStorage(String imageUUID) {
+        if (TextUtils.isEmpty(imageUUID)) {
+            return; //nothing to delete
+        }
+        StorageReference ref = getImageRef(imageUUID);
+        ref.delete()
+                .addOnSuccessListener(aVoid -> activityStep.setImageRef(""))
+                .addOnFailureListener(e -> this.showShortToast(R.string.sync_fail));
+    }
+
+    private void uploadNewImageToStorage(Uri imageUri, String imageUUID) {
+        StorageReference ref = getImageRef(imageUUID);
+        ref.putFile(imageUri)
+                .addOnSuccessListener(taskSnapshot -> {
+                    activityStep.setImageRef(imageUUID);
+                    setupStepImage(imageUri); //to avoid redownloading the image for the first time
+                    this.updateUserInDatabase();
+                })
+                .addOnFailureListener(e -> this.showShortToast(R.string.sync_fail));
+    }
+
+    private void setupStepImage(Uri uri) {
+        GlideApp.with(this).load(uri).into(stepImage);
+    }
+
+    private void setupStepImage(String uuid) {
+        this.setupStepImage(getImageRef(uuid));
+    }
+
+    private void setupStepImage(StorageReference imageRef) {
+        GlideApp.with(this).load(imageRef).into(stepImage);
+    }
+
+    private String generateImageRef(String fileUUID) {
+        String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        return String.format(Locale.getDefault(), "%s/%s", userUid, fileUUID);
+    }
+
+    private StorageReference getImageRef(String uuid) {
+        return FirebaseStorage.getInstance().getReference().child(generateImageRef(uuid));
     }
 
     private static boolean isActivityNameValid(String val) {
