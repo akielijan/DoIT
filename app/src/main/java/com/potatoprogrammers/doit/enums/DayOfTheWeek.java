@@ -1,9 +1,5 @@
 package com.potatoprogrammers.doit.enums;
 
-import android.os.Build;
-import android.support.annotation.RequiresApi;
-
-import java.time.DayOfWeek;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.stream.Stream;
@@ -22,7 +18,7 @@ public enum DayOfTheWeek {
     }
 
     public DayOfTheWeek next() {
-        return Stream.of(DayOfTheWeek.values()).filter(x -> x.ordinal() == this.ordinal() + 1 % 7).findFirst().get();
+        return Stream.of(DayOfTheWeek.values()).filter(x -> x.ordinal() == (this.ordinal() + 1) % 7).findFirst().get();
     }
 
     public DayOfTheWeek prev() {
