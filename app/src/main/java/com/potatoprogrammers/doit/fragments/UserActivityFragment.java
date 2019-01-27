@@ -129,14 +129,17 @@ public class UserActivityFragment extends AbstractFragment {
     private void setupStepButtonsVisibility() {
         if (currentStep <= 0) {
             prevStep.setVisibility(View.INVISIBLE);
+            deleteStep.setVisibility(View.INVISIBLE);
         } else {
             prevStep.setVisibility(View.VISIBLE);
+            deleteStep.setVisibility(View.VISIBLE);
         }
 
         if (currentStep >= activity.getUserActivitySteps().size() - 1) {
             nextStep.setVisibility(View.INVISIBLE);
             addStep.setVisibility(View.VISIBLE);
-            deleteStep.setVisibility(View.VISIBLE);
+            if(currentStep != 0)
+                deleteStep.setVisibility(View.VISIBLE);
         } else {
             nextStep.setVisibility(View.VISIBLE);
             addStep.setVisibility(View.INVISIBLE);
