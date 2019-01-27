@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -15,11 +14,10 @@ import com.potatoprogrammers.doit.models.User;
 import com.potatoprogrammers.doit.models.UserActivity;
 import com.potatoprogrammers.doit.R;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
-import java.util.stream.Collectors;
+
+import lombok.NonNull;
 
 
 /**
@@ -43,54 +41,60 @@ public class UserActivitiesFragment extends AbstractFragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        activities = User.getLoggedInUser().getActivities();
-        activitiesListView = view.findViewById(R.id.activitiesListView);
-        addActivityButton = view.findViewById(R.id.addActivityButton);
+        initActivitiesList(view);
+        this.addActivityButton = view.findViewById(R.id.addActivityButton);
 
-        activitiesListView.setClickable(true);
-        activitiesListView.setLongClickable(true);
-        activitiesListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-
-        activitiesListView.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_checked, activities));
-
-        activities.stream()
-                .filter(UserActivity::isActive)
-                .forEach(x -> activitiesListView.setItemChecked(activities.indexOf(x), true));
-
-        activitiesListView.setOnItemLongClickListener((parent, view12, position, id) -> {
-            activitiesListView.setItemChecked(position, activities.get(position).toggleActive());
+        this.activitiesListView.setOnItemLongClickListener((parent, view12, position, id) -> {
+            this.activitiesListView.setItemChecked(position, activities.get(position).toggleActive());
             this.updateUserInDatabase();
             return true;
         });
 
-        activitiesListView.setOnItemClickListener((parent, view1, position, id) -> {
-            activitiesListView.setItemChecked(position, !activitiesListView.isItemChecked(position)); //todo make it better
+        this.activitiesListView.setOnItemClickListener((parent, view1, position, id) -> {
+            this.activitiesListView.setItemChecked(position, !this.activitiesListView.isItemChecked(position)); //todo make it better
             swapFragment(new UserActivityFragment(), prepareArgumentsForUserActivity(position));
         });
 
-        addActivityButton.setOnClickListener(this::createActivity);
+        this.addActivityButton.setOnClickListener(this::createActivity);
+    }
+
+    private void updateActivitiesList(List<UserActivity> newList) {
+        this.activitiesListView.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_checked, newList));
+        this.activities.stream()
+                .filter(UserActivity::isActive)
+                .forEach(x -> this.activitiesListView.setItemChecked(this.activities.indexOf(x), true));
+    }
+
+    private void initActivitiesList(@NonNull View view) {
+        this.activities = User.getLoggedInUser().getActivities();
+        this.activitiesListView = view.findViewById(R.id.activitiesListView);
+        this.activitiesListView.setClickable(true);
+        this.activitiesListView.setLongClickable(true);
+        this.activitiesListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        this.updateActivitiesList(this.activities);
     }
 
     private Bundle prepareArgumentsForUserActivity(int userActivityPosition) {
         Bundle args = new Bundle();
-        args.putInt("userActivityPosition",userActivityPosition);
+        args.putInt("userActivityPosition", userActivityPosition);
         return args;
     }
 
     private void createActivity(View v) {
-        activities.add(
+        this.activities.add(
                 new UserActivity(
-                        String.format(Locale.getDefault(), "%s %d", NEW_ACTIVITY_NAME, getNextNumberForNewActivity())
+                        String.format(Locale.getDefault(), "%s %d", NEW_ACTIVITY_NAME, this.getNextNumberForNewActivity())
                 )
         );
-        activitiesListView.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_checked, activities));
+        this.activitiesListView.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_checked, this.activities));
+        this.updateActivitiesList(this.activities);
         this.updateUserInDatabase();
     }
 
     private int getNextNumberForNewActivity() {
-        int res = activities.stream()
-                .filter(x -> x.getName().contains(NEW_ACTIVITY_NAME))
-                .map(x -> x.getName().replace(NEW_ACTIVITY_NAME, "").trim())
+        int res = this.activities.stream()
+                .filter(x -> x.getName().contains(this.NEW_ACTIVITY_NAME))
+                .map(x -> x.getName().replace(this.NEW_ACTIVITY_NAME, "").trim())
                 .map(this::parseInt)
                 .max(Integer::compareTo)
                 .orElse(0);

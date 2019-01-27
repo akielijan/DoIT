@@ -47,8 +47,8 @@ public class SignInActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_in);
 
         ImageView signInButton = findViewById(R.id.sign_in_action_button);
-        TextView signInErrorArea = findViewById(R.id.sign_in_error);
 
+        TextView signInErrorArea = findViewById(R.id.sign_in_error);
         signInErrorArea.setText(""); //todo current error state
 
         signInButton.setOnClickListener(view -> attemptSignInWithGoogle());
@@ -66,8 +66,7 @@ public class SignInActivity extends AppCompatActivity {
      * Attempts to sign in using google authentication.
      */
     private void attemptSignInWithGoogle() {
-//        showProgress(true);
-//        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        showProgress(true);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .requestIdToken(getString(R.string.web_client_id))
@@ -91,7 +90,6 @@ public class SignInActivity extends AppCompatActivity {
                 // Google Sign In failed, update UI appropriately
                 Log.w(TAG, "Google sign in failed", e);
                 updateUI(null);
-                // ...
             }
         }
     }
@@ -121,8 +119,6 @@ public class SignInActivity extends AppCompatActivity {
                         Snackbar.make(findViewById(R.id.sign_in_layout), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
                         updateUI(null);
                     }
-
-                    // ...
                 });
     }
 

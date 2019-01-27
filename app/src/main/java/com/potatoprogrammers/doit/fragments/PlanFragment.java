@@ -35,7 +35,7 @@ public class PlanFragment extends AbstractFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        todayDayOfTheWeek = getTodayDayOfTheWeek();
+        todayDayOfTheWeek = DayOfTheWeek.getTodayDayOfTheWeek();
         initializeViewElements(view);
         initializeDaysList(view);
 
@@ -104,29 +104,5 @@ public class PlanFragment extends AbstractFragment {
         Bundle args = new Bundle();
         args.putSerializable("date", date);
         return args;
-    }
-
-    private DayOfTheWeek getTodayDayOfTheWeek() {
-        Calendar calendar = Calendar.getInstance();
-        int day = calendar.get(Calendar.DAY_OF_WEEK);
-
-        switch (day) {
-            case Calendar.MONDAY:
-                return DayOfTheWeek.MONDAY;
-            case Calendar.TUESDAY:
-                return DayOfTheWeek.TUESDAY;
-            case Calendar.WEDNESDAY:
-                return DayOfTheWeek.WEDNESDAY;
-            case Calendar.THURSDAY:
-                return DayOfTheWeek.THURSDAY;
-            case Calendar.FRIDAY:
-                return DayOfTheWeek.FRIDAY;
-            case Calendar.SATURDAY:
-                return DayOfTheWeek.SATURDAY;
-            case Calendar.SUNDAY:
-                return DayOfTheWeek.SUNDAY;
-            default:
-                return DayOfTheWeek.MONDAY;
-        }
     }
 }

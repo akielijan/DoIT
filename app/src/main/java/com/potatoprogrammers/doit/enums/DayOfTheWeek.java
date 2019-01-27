@@ -32,6 +32,10 @@ public enum DayOfTheWeek {
         return day.toString().substring(0, 1).toUpperCase() + day.toString().substring(1).toLowerCase();
     }
 
+    public static DayOfTheWeek getTodayDayOfTheWeek() {
+        return getTodayDayOfTheWeekFromCalendar(Calendar.getInstance());
+    }
+
     public static DayOfTheWeek getTodayDayOfTheWeekFromCalendar(Calendar calendar) {
         int day = calendar.get(Calendar.DAY_OF_WEEK);
 
