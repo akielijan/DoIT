@@ -6,18 +6,23 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_plan"
+            android:checkable="true"
+            android:checked="true"
             android:icon="@drawable/ic_menu_camera"
             android:title="Plan" />
         <item
             android:id="@+id/nav_activities"
+            android:checkable="true"
             android:icon="@drawable/ic_menu_gallery"
             android:title="Activities" />
         <item
             android:id="@+id/nav_statistics"
+            android:checkable="true"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="Statistics" />
         <item
             android:id="@+id/nav_sign_out"
+            android:checkable="true"
             android:icon="@drawable/ic_menu_manage"
             android:title="Sign out" />
     </group>

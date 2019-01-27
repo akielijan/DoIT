@@ -1,6 +1,6 @@
 package com.potatoprogrammers.doit.fragments;
 
-
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.EditText;
@@ -51,11 +52,16 @@ public class PlanDayDetailsFragment extends AbstractFragment {
         super.onViewCreated(view, savedInstanceState);
 
         date = (Date) getArguments().getSerializable("date");
+
         dayName = view.findViewById(R.id.dayTextView);
-        //dayName.setText(getDayOfTheWeek().getDayName());
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         dayName.setText(DayOfTheWeek.getTodayDayOfTheWeekFromCalendar(cal).getDayName());
+
+        if(!DayOfTheWeek.getTodayDayOfTheWeekFromCalendar(cal).equals(DayOfTheWeek.getTodayDayOfTheWeek())) {
+            LinearLayout dayLayout = view.findViewById(R.id.dayLayout);
+            dayLayout.setBackground(new ColorDrawable(0xFFAAAAAA));
+        }
 
         activitiesForCurrentDay = view.findViewById(R.id.dayActivitiesListView);
         activitiesForCurrentDay.setClickable(false);
@@ -116,11 +122,5 @@ public class PlanDayDetailsFragment extends AbstractFragment {
             }
         }
         return result;
-    }
-
-    private DayOfTheWeek getDayOfTheWeek() {
-        Calendar c = Calendar.getInstance();
-        c.setTime(date);
-        return DayOfTheWeek.getDayOfWeek(c.get(Calendar.DAY_OF_WEEK));
     }
 }
