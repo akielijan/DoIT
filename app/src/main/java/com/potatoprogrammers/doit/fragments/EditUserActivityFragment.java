@@ -38,6 +38,7 @@ public class EditUserActivityFragment extends AbstractFragment {
     private ListView checkableDayOptionsList;
     private TimePicker activityStartTimePicker;
     private Button saveChangesButton;
+    private Button deleteActivityButton;
     private TextView[] daysOfTheWeekTextViews;
     private UserActivity currentUserActivity;
     private DayOfTheWeek openedDayOfWeek;
@@ -81,6 +82,13 @@ public class EditUserActivityFragment extends AbstractFragment {
         for (TextView daysOfTheWeekTextView : daysOfTheWeekTextViews) {
             daysOfTheWeekTextView.setOnClickListener(this::daysOfWeekListener);
         }
+
+        deleteActivityButton = view.findViewById(R.id.deleteActivityButton);
+        deleteActivityButton.setOnClickListener(v -> {
+            User.getLoggedInUser().getActivities().remove(currentUserActivity);
+            this.updateUserInDatabase();
+            this.swapFragment(new UserActivitiesFragment(), getArguments());
+        });
     }
 
     private void initActivityElements(@NonNull View view) {
