@@ -18,6 +18,8 @@ import com.potatoprogrammers.doit.models.User;
 import com.potatoprogrammers.doit.models.UserActivity;
 import com.potatoprogrammers.doit.R;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
@@ -78,6 +80,7 @@ public class UserActivitiesFragment extends AbstractFragment {
         this.activitiesListView.setOnItemLongClickListener((parent, view12, position, id) -> {
             this.activitiesListView.setItemChecked(position, activities.get(position).toggleActive());
             this.updateUserInDatabase();
+            this.updateActivitiesList(activities);
             return true;
         });
 
@@ -90,6 +93,7 @@ public class UserActivitiesFragment extends AbstractFragment {
     }
 
     private void updateActivitiesList(List<UserActivity> newList) {
+        Collections.sort(newList);
         this.activitiesListView.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_checked, newList));
         this.activities.stream()
                 .filter(UserActivity::isActive)

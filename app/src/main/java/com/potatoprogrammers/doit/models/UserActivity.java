@@ -17,7 +17,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserActivity {
+public class UserActivity implements Comparable<UserActivity> {
     public UserActivity(String name) {
         this.setName(name);
         this.initializeUserActivity();
@@ -55,5 +55,16 @@ public class UserActivity {
     @Override
     public String toString() {
         return name;
+    }
+
+    @Override
+    public int compareTo(UserActivity o) {
+        return this.getRank() - o.getRank();
+    }
+
+    private int getRank() {
+        int rank = this.isActive? 0 : 100;
+        rank += (int) this.getName().charAt(0);
+        return rank;
     }
 }
