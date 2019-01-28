@@ -116,12 +116,24 @@ public class UserActivityFragment extends AbstractFragment {
             }
         });
 
-        stepDescription.setOnLongClickListener(v -> true);
+        stepDescription.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!v.isFocused()) {
+                    updateStepDescription();
+                }
+            }
+        });
 
         nextStep.setOnClickListener(this::moveToNextStep);
         prevStep.setOnClickListener(this::moveToPreviousStep);
         addStep.setOnClickListener(this::addStep);
         deleteStep.setOnClickListener(this::deleteStep);
+    }
+
+    private void updateStepDescription() {
+        activityStep.setDescription(stepDescription.getText().toString());
+        updateUserInDatabase();
     }
 
     private void setupFromStepModel(UserActivityStep step) {
