@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
+import com.potatoprogrammers.doit.fragments.SettingsFragment;
 import com.potatoprogrammers.doit.fragments.UserActivitiesFragment;
 import com.potatoprogrammers.doit.fragments.PlanFragment;
 import com.potatoprogrammers.doit.fragments.StatisticsFragment;
@@ -113,9 +114,8 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        //todo handle settings or remove them
         if (id == R.id.action_settings) {
-            return true;
+            changeFragment(new SettingsFragment());
         }
 
         return super.onOptionsItemSelected(item);
