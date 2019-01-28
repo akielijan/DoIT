@@ -85,13 +85,35 @@ public class UserActivityFragment extends AbstractFragment {
         setupFromStepModel(activityStep);
     }
 
+    private void deleteImage() {
+        TextView label = new TextView(getContext());
+        label.setText("Are you sure you want to delete this image?");
+        new AlertDialog.Builder(getContext())
+                .setTitle("Delete image")
+                .setView(new TextView(getContext()))
+                .setPositiveButton(R.string.yes, (dialog, which) -> {
+                    deleteOldImageFromStorage(activityStep.getImageRef());
+                    stepImage.setImageResource(R.drawable.no_photo);
+                    this.refreshFragment();
+                })
+                .setNegativeButton(R.string.no, (dialog, which) -> dialog.dismiss())
+                .show();
+    }
+
     private void initializeListeners() {
         editUserActivity.setOnClickListener(v -> swapFragment(new EditUserActivityFragment(), getArguments()));
         activityName.setOnLongClickListener(this::renameActivity);
+
         stepImage.setOnLongClickListener(v -> {
-            callPictureSelector(REQUEST_GET_STEP_PICTURE);
-            //handle rest in onActivityResult
+            deleteImage();
             return true;
+        });
+
+        stepImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callPictureSelector(REQUEST_GET_STEP_PICTURE);
+            }
         });
 
         stepDescription.setOnLongClickListener(v -> true);

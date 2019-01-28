@@ -1,6 +1,7 @@
 package com.potatoprogrammers.doit.fragments;
 
 
+import android.app.AlertDialog;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -85,9 +86,18 @@ public class EditUserActivityFragment extends AbstractFragment {
 
         deleteActivityButton = view.findViewById(R.id.deleteActivityButton);
         deleteActivityButton.setOnClickListener(v -> {
-            User.getLoggedInUser().getActivities().remove(currentUserActivity);
-            this.updateUserInDatabase();
-            this.swapFragment(new UserActivitiesFragment(), getArguments());
+            TextView label = new TextView(getContext());
+            label.setText("Are you sure you want to delete this activity?");
+            new AlertDialog.Builder(getContext())
+                    .setTitle("Delete activity")
+                    .setView(new TextView(getContext()))
+                    .setPositiveButton(R.string.yes, (dialog, which) -> {
+                        User.getLoggedInUser().getActivities().remove(currentUserActivity);
+                        this.updateUserInDatabase();
+                        this.swapFragment(new UserActivitiesFragment(), getArguments());
+                    })
+                    .setNegativeButton(R.string.no, (dialog, which) -> dialog.dismiss())
+                    .show();
         });
     }
 
