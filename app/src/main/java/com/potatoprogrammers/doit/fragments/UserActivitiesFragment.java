@@ -3,12 +3,16 @@ package com.potatoprogrammers.doit.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.potatoprogrammers.doit.models.User;
 import com.potatoprogrammers.doit.models.UserActivity;
@@ -24,6 +28,7 @@ import lombok.NonNull;
  * A simple {@link Fragment} subclass.
  */
 public class UserActivitiesFragment extends AbstractFragment {
+    private TextView search;
     private ListView activitiesListView;
     private Button addActivityButton;
     private List<UserActivity> activities;
@@ -43,6 +48,32 @@ public class UserActivitiesFragment extends AbstractFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         initActivitiesList(view);
         this.addActivityButton = view.findViewById(R.id.addActivityButton);
+        this.search = view.findViewById(R.id.searchTextView);
+
+        this.search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                try {
+                    UserActivity activity = activities.stream().filter(x -> x.getName().toLowerCase().contains(search.getText().toString().toLowerCase())).findFirst().get();
+                    if(activity!=null) {
+                        int i = activities.indexOf(activity);
+                        activitiesListView.setSelection(i);
+                    }
+                } catch (Exception e) {
+                    Toast.makeText(getContext(), "Mach not found", Toast.LENGTH_SHORT);
+                }
+            }
+        });
 
         this.activitiesListView.setOnItemLongClickListener((parent, view12, position, id) -> {
             this.activitiesListView.setItemChecked(position, activities.get(position).toggleActive());
