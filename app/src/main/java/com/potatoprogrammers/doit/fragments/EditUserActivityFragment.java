@@ -22,17 +22,20 @@ import com.potatoprogrammers.doit.enums.DayOfTheWeek;
 import com.potatoprogrammers.doit.models.User;
 import com.potatoprogrammers.doit.models.UserActivity;
 import com.potatoprogrammers.doit.models.UserActivityDate;
-
-import org.w3c.dom.Text;
+import com.potatoprogrammers.doit.models.UserStats;
+import com.potatoprogrammers.doit.utilities.Utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.Calendar;
+import java.util.Map;
+
+import lombok.NoArgsConstructor;
 
 /**
  * A simple {@link Fragment} subclass.
  */
+@NoArgsConstructor
 public class EditUserActivityFragment extends AbstractFragment {
     private TextView currentActivityName;
     private ListView checkableOptionsList;
@@ -43,10 +46,6 @@ public class EditUserActivityFragment extends AbstractFragment {
     private TextView[] daysOfTheWeekTextViews;
     private UserActivity currentUserActivity;
     private DayOfTheWeek openedDayOfWeek;
-
-    public EditUserActivityFragment() {
-
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -76,6 +75,7 @@ public class EditUserActivityFragment extends AbstractFragment {
         activityStartTimePicker.setOnTimeChangedListener((view15, hourOfDay, minute) -> currentUserActivity.getUserActivityDates().get(openedDayOfWeek.ordinal()).setTime(hourOfDay, minute));
 
         saveChangesButton.setOnClickListener(v -> {
+            this.updatePlanWithEditedActivity();
             this.updateUserInDatabase();
             this.swapFragment(new UserActivitiesFragment(), getArguments());
         });
@@ -99,6 +99,25 @@ public class EditUserActivityFragment extends AbstractFragment {
                     .setNegativeButton(R.string.no, (dialog, which) -> dialog.dismiss())
                     .show();
         });
+    }
+
+    private void updatePlanWithEditedActivity() {
+        Calendar cal = Calendar.getInstance();
+        for(int i=0; i<=3; i++) { //for today and up to 3 days from now on
+            DayOfTheWeek day = DayOfTheWeek.getDayOfTheWeekFromCalendar(cal);
+            Map<String, UserStats> stats = User.getLoggedInUser().getStats();
+            String dateAsString = Utils.getDateAsString(cal.getTime());
+            if (!stats.containsKey(dateAsString)) {
+                stats.put(dateAsString, new UserStats());
+            }
+            Map<String, Boolean> activitiesStatus = stats.get(dateAsString).getActivitiesStatus();
+            if (currentUserActivity.isActive() && currentUserActivity.isDayActive(day)) {
+                activitiesStatus.put(currentUserActivity.getUuid(), false); //add the current activity to the user's plan (as not done)
+            } else {
+                activitiesStatus.remove(currentUserActivity.getUuid()); //remove the activity from the plan
+            }
+            cal.add(Calendar.DAY_OF_MONTH, 1);
+        }
     }
 
     private void initActivityElements(@NonNull View view) {

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 
 import lombok.NonNull;
 
@@ -102,6 +104,12 @@ public class UserActivitiesFragment extends AbstractFragment {
 
     private void initActivitiesList(@NonNull View view) {
         this.activities = User.getLoggedInUser().getActivities();
+        //todo: remove this block of code
+        this.activities.stream()
+                .filter(x -> TextUtils.isEmpty(x.getUuid()))
+                .forEach(x -> x.setUuid(UUID.randomUUID().toString())); //fix empty UUIDs
+        this.updateUserInDatabase();
+        //-------------------------------
         this.activitiesListView = view.findViewById(R.id.activitiesListView);
         this.activitiesListView.setClickable(true);
         this.activitiesListView.setLongClickable(true);

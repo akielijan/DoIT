@@ -33,10 +33,10 @@ public enum DayOfTheWeek {
     }
 
     public static DayOfTheWeek getTodayDayOfTheWeek() {
-        return getTodayDayOfTheWeekFromCalendar(Calendar.getInstance());
+        return getDayOfTheWeekFromCalendar(Calendar.getInstance());
     }
 
-    public static DayOfTheWeek getTodayDayOfTheWeekFromCalendar(Calendar calendar) {
+    public static DayOfTheWeek getDayOfTheWeekFromCalendar(Calendar calendar) {
         int day = calendar.get(Calendar.DAY_OF_WEEK);
 
         switch (day) {

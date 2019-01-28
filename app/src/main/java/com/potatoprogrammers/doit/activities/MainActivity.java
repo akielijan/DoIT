@@ -15,9 +15,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.SetOptions;
+import com.potatoprogrammers.doit.enums.DayOfTheWeek;
 import com.potatoprogrammers.doit.fragments.SettingsFragment;
 import com.potatoprogrammers.doit.fragments.UserActivitiesFragment;
 import com.potatoprogrammers.doit.fragments.PlanFragment;
@@ -30,9 +29,14 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.potatoprogrammers.doit.models.User;
 import com.potatoprogrammers.doit.models.UserActivity;
-import com.potatoprogrammers.doit.models.UserActivityStep;
+import com.potatoprogrammers.doit.models.UserStats;
+import com.potatoprogrammers.doit.utilities.Utils;
 
+import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -55,37 +59,9 @@ public class MainActivity extends AppCompatActivity
 
         changeFragment(new PlanFragment());
 
-        getUserFromFirestore();
+        //getUserFromFirestore();
+        setupPlanForNextDays();
         Snackbar.make(findViewById(R.id.drawer_layout), String.format(Locale.getDefault(), "Hello %s", FirebaseAuth.getInstance().getCurrentUser().getDisplayName()), Snackbar.LENGTH_SHORT).show();
-    }
-
-    private void getUserFromFirestore() {
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection(User.COLLECTION)
-                .document(uid)
-                .get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    if (documentSnapshot.exists()) {
-                        User.setLoggedInUser(documentSnapshot.toObject(User.class));
-                    } else {
-                        createUserData(uid);
-                    }
-                })
-                .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), String.format(Locale.getDefault(), "Error occurred during getting user info from the Firestore: %s", e.getLocalizedMessage()), Toast.LENGTH_SHORT).show());
-    }
-
-    private void createUserData(String uid) {
-        if (User.getLoggedInUser() == null) {
-            User.setLoggedInUser(new User());
-        }
-
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection(User.COLLECTION)
-                .document(uid)
-                .set(User.getLoggedInUser())
-                //.addOnSuccessListener(aVoid -> Toast.makeText(getApplicationContext(), "Welcome, new user!", Toast.LENGTH_SHORT).show())
-                .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show());
     }
 
     public void changeFragment(Fragment fragment) {
@@ -151,5 +127,38 @@ public class MainActivity extends AppCompatActivity
                 .build();
         GoogleSignInClient client = GoogleSignIn.getClient(this, gso);
         client.signOut();
+
+        User.setLoggedInUser(null); //delete local data
+    }
+
+    private void setupPlanForNextDays() {
+        Calendar cal = Calendar.getInstance();
+        List<UserActivity> activities = User.getLoggedInUser().getActivities();
+        for(int i=0; i<=3; i++) { //for today and up to 3 days from now on
+            Map<String, UserStats> stats = User.getLoggedInUser().getStats();
+            DayOfTheWeek day = DayOfTheWeek.getDayOfTheWeekFromCalendar(cal);
+            String dateAsString = Utils.getDateAsString(cal.getTime());
+
+            if (!stats.containsKey(dateAsString)) {
+                stats.put(dateAsString, new UserStats());
+            }
+            Map<String, Boolean> activitiesStatus = stats.get(dateAsString).getActivitiesStatus();
+
+
+            List<UserActivity> collectedActivities = activities.stream()
+                    .filter(UserActivity::isActive)
+                    .filter(activity -> activity.isDayActive(day))
+                    .collect(Collectors.toList());
+
+            for (UserActivity currentUserActivity : collectedActivities) {
+                if (currentUserActivity.isActive() && currentUserActivity.isDayActive(day)) {
+                    activitiesStatus.put(currentUserActivity.getUuid(), false); //add the current activity to the user's plan (as not done)
+                } else {
+                    activitiesStatus.remove(currentUserActivity.getUuid()); //remove the activity from the plan
+                }
+            }
+
+            cal.add(Calendar.DAY_OF_MONTH, 1);
+        }
     }
 }

@@ -40,12 +40,7 @@ public class PlanFragment extends AbstractFragment {
         initializeDaysList(view);
 
         for (TextView tv:visiblePlanDays) {
-            tv.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    openDayView(v.getId());
-                }
-            });
+            tv.setOnClickListener(v -> openDayView(v.getId()));
         }
     }
 
@@ -97,7 +92,6 @@ public class PlanFragment extends AbstractFragment {
                 return;
         } //todo handle open day view, create plan structure in db
         swapFragment(new PlanDayDetailsFragment(), prepareArgumentsForPlayDayDetails(cal.getTime()));
-        //String strDate = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(cal.getTime());
     }
 
     private Bundle prepareArgumentsForPlayDayDetails(Date date) {

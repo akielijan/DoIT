@@ -1,7 +1,5 @@
 package com.potatoprogrammers.doit.models;
 
-import android.media.audiofx.Equalizer;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +23,7 @@ public class User {
     @NonNull
     private List<UserActivity> activities = new ArrayList<>();
     @NonNull
-    private Map<String, String> notes = new HashMap<>();
+    private Map<String, UserStats> stats = new HashMap<>();
     @NonNull
     private UserSettings settings = new UserSettings();
 }
