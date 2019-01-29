@@ -74,7 +74,7 @@ public class UserActivityFragment extends AbstractFragment {
         setupStepButtonsVisibility();
 
         activityName.setText(activity.getName());
-        stepNo.setText(String.format(Locale.getDefault(), "Step %d", currentStep+1));
+        stepNo.setText(String.format(Locale.getDefault(), "Step %d", currentStep + 1));
 
         setupFromStepModel(activityStep);
     }
@@ -119,7 +119,7 @@ public class UserActivityFragment extends AbstractFragment {
         stepDescription.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(!v.isFocused()) {
+                if (!v.isFocused()) {
                     updateStepDescription();
                 }
             }
@@ -172,7 +172,7 @@ public class UserActivityFragment extends AbstractFragment {
         if (currentStep >= activity.getUserActivitySteps().size() - 1) {
             nextStep.setVisibility(View.INVISIBLE);
             addStep.setVisibility(View.VISIBLE);
-            if(currentStep != 0)
+            if (currentStep != 0)
                 deleteStep.setVisibility(View.VISIBLE);
         } else {
             nextStep.setVisibility(View.VISIBLE);

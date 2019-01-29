@@ -1,12 +1,6 @@
 package com.potatoprogrammers.doit.models;
 
-import android.os.Build;
-import android.support.annotation.RequiresApi;
-
 import com.potatoprogrammers.doit.enums.DayOfTheWeek;
-
-import java.time.DayOfWeek;
-import java.time.LocalTime;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

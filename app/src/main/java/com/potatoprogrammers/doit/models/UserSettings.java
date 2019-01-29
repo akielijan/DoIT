@@ -1,13 +1,5 @@
 package com.potatoprogrammers.doit.models;
 
-import com.potatoprogrammers.doit.enums.DayOfTheWeek;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

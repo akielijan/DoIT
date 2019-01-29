@@ -24,13 +24,15 @@ import lombok.Setter;
 public class UserActivity implements Comparable<UserActivity> {
 
     private String uuid = UUID.randomUUID().toString();
-    @NonNull private String name;
+    @NonNull
+    private String name;
     private boolean isActive;
     private List<UserActivityStep> userActivitySteps = new ArrayList<>(Collections.singletonList(new UserActivityStep()));
     private List<UserActivityDate> userActivityDates = Stream.of(DayOfTheWeek.values()).map(UserActivityDate::new).collect(Collectors.toList());
 
     /**
      * Toggles the activity status and returns the toggled value.
+     *
      * @return toggled status
      */
     public boolean toggleActive() {
@@ -59,7 +61,7 @@ public class UserActivity implements Comparable<UserActivity> {
     }
 
     private int getRank() {
-        int rank = this.isActive? 0 : 100;
+        int rank = this.isActive ? 0 : 100;
         rank += (int) this.getName().charAt(0);
         return rank;
     }

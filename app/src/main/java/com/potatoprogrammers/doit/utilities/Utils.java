@@ -12,7 +12,7 @@ import java.util.Locale;
 public class Utils {
     public static Bitmap fromBase64(String s) {
         byte[] decodedBytes = Base64.decode(
-                s.substring(s.indexOf(",")  + 1),
+                s.substring(s.indexOf(",") + 1),
                 Base64.DEFAULT
         );
 

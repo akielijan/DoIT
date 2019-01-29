@@ -4,8 +4,8 @@ package com.potatoprogrammers.doit.fragments;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
-import android.text.TextWatcher;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +15,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.potatoprogrammers.doit.R;
 import com.potatoprogrammers.doit.models.User;
 import com.potatoprogrammers.doit.models.UserActivity;
-import com.potatoprogrammers.doit.R;
 
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
@@ -69,7 +68,7 @@ public class UserActivitiesFragment extends AbstractFragment {
             public void afterTextChanged(Editable s) {
                 try {
                     UserActivity activity = activities.stream().filter(x -> x.getName().toLowerCase().contains(search.getText().toString().toLowerCase())).findFirst().get();
-                    if(activity!=null) {
+                    if (activity != null) {
                         int i = activities.indexOf(activity);
                         activitiesListView.setSelection(i);
                     }

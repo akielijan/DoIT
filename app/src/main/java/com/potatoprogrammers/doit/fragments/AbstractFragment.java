@@ -7,21 +7,15 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.bumptech.glide.util.Util;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 import com.potatoprogrammers.doit.R;
 import com.potatoprogrammers.doit.models.User;
-import com.potatoprogrammers.doit.utilities.Utils;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 public abstract class AbstractFragment extends Fragment {
     protected void swapFragment(Fragment fragment, Bundle args) {
-        if(args!=null && !args.isEmpty()) {
+        if (args != null && !args.isEmpty()) {
             fragment.setArguments(args);
         }
 

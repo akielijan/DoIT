@@ -1,6 +1,5 @@
 package com.potatoprogrammers.doit.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,11 +9,8 @@ import android.widget.TextView;
 import com.potatoprogrammers.doit.R;
 import com.potatoprogrammers.doit.enums.DayOfTheWeek;
 
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 import lombok.NonNull;
 
@@ -39,7 +35,7 @@ public class PlanFragment extends AbstractFragment {
         initializeViewElements(view);
         initializeDaysList(view);
 
-        for (TextView tv:visiblePlanDays) {
+        for (TextView tv : visiblePlanDays) {
             tv.setOnClickListener(v -> openDayView(v.getId()));
         }
     }

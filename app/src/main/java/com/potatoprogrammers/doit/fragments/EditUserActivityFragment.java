@@ -103,7 +103,7 @@ public class EditUserActivityFragment extends AbstractFragment {
 
     private void updatePlanWithEditedActivity() {
         Calendar cal = Calendar.getInstance();
-        for(int i=0; i<=3; i++) { //for today and up to 3 days from now on
+        for (int i = 0; i <= 3; i++) { //for today and up to 3 days from now on
             DayOfTheWeek day = DayOfTheWeek.getDayOfTheWeekFromCalendar(cal);
             Map<String, UserStats> stats = User.getLoggedInUser().getStats();
             String dateAsString = Utils.getDateAsString(cal.getTime());
@@ -164,7 +164,7 @@ public class EditUserActivityFragment extends AbstractFragment {
     }
 
     private void switchDay(DayOfTheWeek day, TextView clickedDay) {
-        for(TextView tv : daysOfTheWeekTextViews) {
+        for (TextView tv : daysOfTheWeekTextViews) {
             tv.setTypeface(null, Typeface.NORMAL);
         }
 

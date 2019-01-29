@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity
     private void setupPlanForNextDays() {
         Calendar cal = Calendar.getInstance();
         List<UserActivity> activities = User.getLoggedInUser().getActivities();
-        for(int i=0; i<=3; i++) { //for today and up to 3 days from now on
+        for (int i = 0; i <= 3; i++) { //for today and up to 3 days from now on
             Map<String, UserStats> stats = User.getLoggedInUser().getStats();
             DayOfTheWeek day = DayOfTheWeek.getDayOfTheWeekFromCalendar(cal);
             String dateAsString = Utils.getDateAsString(cal.getTime());

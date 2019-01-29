@@ -67,7 +67,7 @@ public class StatisticsFragment extends AbstractFragment {
         Calendar cal = Calendar.getInstance();
         final int DAYS = 7;
         cal.add(Calendar.DAY_OF_MONTH, -DAYS);
-        for (int i=0; i<DAYS; ++i) {
+        for (int i = 0; i < DAYS; ++i) {
             cal.add(Calendar.DAY_OF_MONTH, 1);
             UserStats dailyStats = stats.get(Utils.getDateAsString(cal.getTime()));
             double percentage;
@@ -75,7 +75,7 @@ public class StatisticsFragment extends AbstractFragment {
                 long actives = 0;
                 long total = 0;
 
-                for(Map.Entry<String, Boolean> pair : dailyStats.getActivitiesStatus().entrySet()) {
+                for (Map.Entry<String, Boolean> pair : dailyStats.getActivitiesStatus().entrySet()) {
                     total++;
                     if (pair.getValue()) {
                         actives++;
@@ -83,10 +83,10 @@ public class StatisticsFragment extends AbstractFragment {
                 }
 
                 percentage = total == 0 ? 0.0 : (actives * 1.0) / (total * 1.0);
-            } catch(Exception e) {
+            } catch (Exception e) {
                 percentage = 0.0;
             }
-            data.add(new ValueDataEntry(getDateForChart(cal.getTime()), percentage*100));
+            data.add(new ValueDataEntry(getDateForChart(cal.getTime()), percentage * 100));
         }
         return data;
     }

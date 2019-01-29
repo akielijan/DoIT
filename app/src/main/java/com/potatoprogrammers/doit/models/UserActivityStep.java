@@ -1,9 +1,5 @@
 package com.potatoprogrammers.doit.models;
 
-import android.graphics.Bitmap;
-
-import java.util.Base64;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

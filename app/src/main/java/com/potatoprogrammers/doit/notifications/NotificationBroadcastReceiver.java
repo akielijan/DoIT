@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
 public class NotificationBroadcastReceiver extends BroadcastReceiver {
     private static int minutesBeforeNotification = 60; //1 hour before
     private static final Map<String, Integer> notifyIds = new HashMap<>();
+
     @Override
     public void onReceive(Context context, Intent intent) {
 
@@ -43,7 +44,7 @@ public class NotificationBroadcastReceiver extends BroadcastReceiver {
                     .filter(a -> !todayStats.getActivitiesStatus().getOrDefault(a.getUuid(), Boolean.FALSE)) //get not finished tasks
                     .filter(a -> this.getMinutesUntilActivity(a) < minutesBeforeNotification) //get only 1hr before the activity
                     .collect(Collectors.toList());
-            for (UserActivity activity: toNotify) {
+            for (UserActivity activity : toNotify) {
                 NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, "")
                         .setSmallIcon(R.drawable.ic_launcher_background)
                         .setContentTitle(activity.getName())
@@ -54,7 +55,7 @@ public class NotificationBroadcastReceiver extends BroadcastReceiver {
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
 
                 if (!notifyIds.containsKey(activity.getUuid())) {
-                    notifyIds.put(activity.getUuid(), (int)System.currentTimeMillis());
+                    notifyIds.put(activity.getUuid(), (int) System.currentTimeMillis());
                 }
 
                 notificationManager.notify(notifyIds.get(activity.getUuid()), notificationBuilder.build());
