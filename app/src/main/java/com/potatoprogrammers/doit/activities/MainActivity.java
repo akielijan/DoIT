@@ -2,10 +2,10 @@ package com.potatoprogrammers.doit.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -13,23 +13,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
-
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.potatoprogrammers.doit.enums.DayOfTheWeek;
-import com.potatoprogrammers.doit.fragments.SettingsFragment;
-import com.potatoprogrammers.doit.fragments.UserActivitiesFragment;
-import com.potatoprogrammers.doit.fragments.PlanFragment;
-import com.potatoprogrammers.doit.fragments.StatisticsFragment;
-import com.potatoprogrammers.doit.R;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.potatoprogrammers.doit.R;
+import com.potatoprogrammers.doit.enums.DayOfTheWeek;
+import com.potatoprogrammers.doit.fragments.PlanFragment;
+import com.potatoprogrammers.doit.fragments.SettingsFragment;
+import com.potatoprogrammers.doit.fragments.StatisticsFragment;
+import com.potatoprogrammers.doit.fragments.UserActivitiesFragment;
 import com.potatoprogrammers.doit.models.User;
 import com.potatoprogrammers.doit.models.UserActivity;
 import com.potatoprogrammers.doit.models.UserStats;
+import com.potatoprogrammers.doit.notifications.NotifyService;
 import com.potatoprogrammers.doit.utilities.Utils;
 
 import java.util.Calendar;
@@ -41,9 +39,13 @@ import java.util.stream.Collectors;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private Intent notifyServiceIntent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        notifyServiceIntent = new Intent(getBaseContext(), NotifyService.class);
+        startService(notifyServiceIntent);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -128,6 +130,7 @@ public class MainActivity extends AppCompatActivity
         GoogleSignInClient client = GoogleSignIn.getClient(this, gso);
         client.signOut();
 
+        stopService(notifyServiceIntent);
         User.setLoggedInUser(null); //delete local data
     }
 

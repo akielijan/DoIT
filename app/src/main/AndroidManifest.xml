@@ -29,5 +29,7 @@
             android:name=".activities.MainActivity"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar" />
+        <service android:name=".notifications.NotifyService" />
+        <receiver android:name=".notifications.NotificationBroadcastReceiver" android:enabled="true"></receiver>
     </application>
 </manifest>

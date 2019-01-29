@@ -36,8 +36,10 @@
     <string name="sync_success">Sync successful!</string>
     <string name="sync_fail">Sync failed!</string>
     <string name="no_desc">This step has no description</string>
+    <string name="reminder_title">Time for some training!</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="web_client_id">423602218548-sfhvejfkrcbob66cvn59v8htekvbimf7.apps.googleusercontent.com</string>
+    <string name="notification_body">Time for your activity!</string>
 </resources>
