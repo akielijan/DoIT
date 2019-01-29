@@ -42,7 +42,7 @@ public class NotificationBroadcastReceiver extends BroadcastReceiver {
                     .filter(UserActivity::isActive) //get only from active activities
                     .filter(a -> a.isDayActive(DayOfTheWeek.getDayOfTheWeekFromCalendar(Calendar.getInstance()))) //get only for current day
                     .filter(a -> !todayStats.getActivitiesStatus().getOrDefault(a.getUuid(), Boolean.FALSE)) //get not finished tasks
-                    .filter(a -> this.getMinutesUntilActivity(a) < minutesBeforeNotification) //get only 1hr before the activity
+                    .filter(this::isActivityWaitingForNotification) //get only 1hr before the activity
                     .collect(Collectors.toList());
             for (UserActivity activity : toNotify) {
                 NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, "")
@@ -56,11 +56,17 @@ public class NotificationBroadcastReceiver extends BroadcastReceiver {
 
                 if (!notifyIds.containsKey(activity.getUuid())) {
                     notifyIds.put(activity.getUuid(), (int) System.currentTimeMillis());
+                    notificationManager.notify(notifyIds.get(activity.getUuid()), notificationBuilder.build());
+                } else {
+                    continue; //todo: decide whether user should be reminded again or not
                 }
-
-                notificationManager.notify(notifyIds.get(activity.getUuid()), notificationBuilder.build());
             }
         }).start();
+    }
+
+    private boolean isActivityWaitingForNotification(UserActivity ua) {
+        int minutes = getMinutesUntilActivity(ua);
+        return minutes < minutesBeforeNotification && minutes >= 0; //don't use notification to tell about being late!
     }
 
     private int getMinutesUntilActivity(UserActivity ua) {
